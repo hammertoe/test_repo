@@ -17,24 +17,6 @@ jobs:
 
     - name: Checkout code  
       uses: actions/checkout@v2
-      with:
-        fetch-depth: 5
-
-    - name: Checkout prior code  
-      uses: actions/checkout@v2
-      with:
-        ref: ${{ github.event.before }}
-        path: .old-code
-
-    - name: Checkout current code  
-      uses: actions/checkout@v2
-      with:
-        path: .new-code
-
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
 
     - name: Run PayID
       uses: hammertoe/payid_xrp_action@33bd954
