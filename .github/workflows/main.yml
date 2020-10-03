@@ -26,5 +26,5 @@ jobs:
       uses: hammertoe/payid_xrp_action@33bd954
       with:
         wallet_secret: ${{ secrets.PAYID_WALLET_SECRET }}
-        amount: 2002
+        amount: 2003
         commit_log: ${{ env.commit_log }}
