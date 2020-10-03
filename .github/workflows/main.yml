@@ -44,7 +44,7 @@ jobs:
       uses: hammertoe/lord_of_the_pythons@master
 
     - name: Run PayID
-      uses: hammertoe/payid_xrp_action@1.1
+      uses: hammertoe/payid_xrp_action@d78333e
       if: ${{ steps.lotr.outputs.num > 0 }}
       with:
         wallet_secret: ${{ secrets.PAYID_WALLET_SECRET }}
