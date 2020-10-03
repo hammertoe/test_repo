@@ -25,7 +25,7 @@ jobs:
         echo ::set-env name=commit_log::$(git log --format=%B ${{ github.event.before }}..${{ github.event.after }})
 
     - name: Run PayID
-      uses: hammertoe/payid_xrp_action@af8b681
+      uses: hammertoe/payid_xrp_action@73734b0
       with:
         wallet_secret: ${{ secrets.PAYID_WALLET_SECRET }}
         amount: 2004
