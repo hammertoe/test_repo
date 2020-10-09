@@ -19,7 +19,7 @@ jobs:
         python-version: '3.x'
       run: |
         python -m pip install --upgrade pip
-	pip install pytest pytest-cov
+        pip install pytest pytest-cov
 
     - name: Checkout prior code  
       uses: actions/checkout@v2
@@ -31,12 +31,13 @@ jobs:
       run: |
         cd .old-code
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-	cd ..
+        cd ..
 
     - name: Run tests on old code
       run: |
         cd .old-code
         pytest --cov-report=xml --cov=foo test.py
+        cd ..
 
     - name: Checkout current code  
       uses: actions/checkout@v2
@@ -48,12 +49,13 @@ jobs:
       run: |
         cd .new-code
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-	cd ..
+        cd ..
 
     - name: Run test on new code
       run: |
         cd .new-code
         pytest --cov-report=xml --cov=foo test.py
+        cd ..
 
     - name: Run PayID
       uses: hammertoe/payid_xrp_pr_coverage_action@master
