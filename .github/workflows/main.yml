@@ -65,5 +65,5 @@ jobs:
         repo_token: ${{secrets.GITHUB_TOKEN}}
         wallet_secret: ${{ secrets.PAYID_WALLET_SECRET }}
         amount: 1000000
-        old_coverage_file: .old-code/coverage.xml
-        new_coverage_file: .new_code/coverage.xml
+        old_coverage_file: /home/runner/work/test_repo/test_repo/.old-code/coverage.xml
+        new_coverage_file: /home/runner/work/test_repo/test_repo/.new-code/coverage.xml
