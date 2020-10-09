@@ -17,20 +17,21 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.x'
+      run: |
+        python -m pip install --upgrade pip
+	pip install pytest pytest-cov
 
     - name: Checkout prior code  
       uses: actions/checkout@v2
       with:
-#        ref: ${{ github.event.before }}
         ref: ${{ github.event.pull_request.base.sha }}
         path: .old-code
 
     - name: Install old code dependencies
       run: |
         cd .old-code
-        python -m pip install --upgrade pip
-        pip install pytest pytest-cov
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+	cd ..
 
     - name: Run tests on old code
       run: |
@@ -46,9 +47,8 @@ jobs:
     - name: Install new code dependencies
       run: |
         cd .new-code
-        python -m pip install --upgrade pip
-        pip install pytest pytest-cov
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+	cd ..
 
     - name: Run test on new code
       run: |
