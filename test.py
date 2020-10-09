@@ -10,6 +10,13 @@ class TestSum(unittest.TestCase):
         result = afunction(1)
         self.assertEqual(result, 1)
 
+    def test_function2(self):
+        """
+        Test that it can sum a list of integers
+        """
+        result = afunction(2)
+        self.assertEqual(result, 2)
+
 if __name__ == '__main__':
     unittest.main()
 
