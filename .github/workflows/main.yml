@@ -18,11 +18,11 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 10
-	
+        
     - name: Get commit message
       run: |
         echo commit_log=$(git log --format=%B ${{ github.event.before }}..${{ github.event.after }}) >> $GITHUB_ENV
-	
+        
     - name: Checkout prior code  
       uses: actions/checkout@v2
       with:
