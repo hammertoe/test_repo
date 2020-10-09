@@ -1,43 +1,29 @@
-name: Pay on test coverage improvement
+name: PayID PR Coverage Action
 
 on:
   # Trigger the workflow on push or pull request,
   # but only for the master branch
-  push:
+  pull_request:
     branches:
       - master
 
-
 jobs:
   pay:
+
     runs-on: ubuntu-latest
+
     steps:
-
-
-    - name: Checkout code  
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 10
-        
-    - name: Get commit message
-      run: |
-        echo commit_log=$(git log --format=%B ${{ github.event.before }}..${{ github.event.after }}) >> $GITHUB_ENV
-        
-    - name: Checkout prior code  
-      uses: actions/checkout@v2
-      with:
-        ref: ${{ github.event.before }}
-        path: .old-code
-
-    - name: Checkout current code  
-      uses: actions/checkout@v2
-      with:
-        path: .new-code
-
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: '3.x'
+
+    - name: Checkout prior code  
+      uses: actions/checkout@v2
+      with:
+#        ref: ${{ github.event.before }}
+        ref: ${{ github.event.pull_request.base.sha }}
+        path: .old-code
 
     - name: Install old code dependencies
       run: |
@@ -50,7 +36,12 @@ jobs:
       run: |
         cd .old-code
         pytest --cov-report=xml --cov=foo test.py
-        python -c "import xml.etree.ElementTree as ET; print(f'''old_coverage={ET.parse('coverage.xml').getroot().attrib['line-rate']}''')" >> $GITHUB_ENV
+
+    - name: Checkout current code  
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+        path: .new-code
 
     - name: Install new code dependencies
       run: |
@@ -63,18 +54,12 @@ jobs:
       run: |
         cd .new-code
         pytest --cov-report=xml --cov=foo test.py
-        python -c "import xml.etree.ElementTree as ET; print(f'''new_coverage={ET.parse('coverage.xml').getroot().attrib['line-rate']}''')" >> $GITHUB_ENV
-
-    - name: Debug
-      run: |
-        echo Old: ${{ env.old_coverage }}
-        echo New: ${{ env.new_coverage }}
 
     - name: Run PayID
-      uses: hammertoe/payid_xrp_action@2.0
-      if: ${{ env.new_coverage > env.old_coverage }}
+      uses: hammertoe/payid_xrp_pr_coverage_action@master
       with:
+        repo_token: ${{secrets.GITHUB_TOKEN}}
         wallet_secret: ${{ secrets.PAYID_WALLET_SECRET }}
-        amount: 1000
-#        amount: ${{ (env.new_coverage - env.old_coverage) * 100 }}
-        commit_log: ${{ env.commit_log }}
+        amount: 1000000
+        old_coverage_file: .old-code/coverage.xml
+        new_coverage_file: .new_code/coverage.xml
