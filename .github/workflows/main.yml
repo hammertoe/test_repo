@@ -40,7 +40,7 @@ jobs:
       run: |
         cd .old-code
         pytest --cov-report=xml --cov tests/
-	python -c "import xml.etree.ElementTree as ET; print('::set-env name=old_coverage::', ET.parse('coverage.xml').getroot().attrib['line-rate'])"
+        python -c "import xml.etree.ElementTree as ET; print('::set-env name=old_coverage::', ET.parse('coverage.xml').getroot().attrib['line-rate'])"
 
     - name: Install new code dependencies
       run: |
@@ -53,7 +53,7 @@ jobs:
       run: |
         cd .new-code
         pytest --cov-report=xml --cov tests/
-	python -c "import xml.etree.ElementTree as ET; print('::set-env name=new_coverage::', ET.parse('coverage.xml').getroot().attrib['line-rate'])"
+        python -c "import xml.etree.ElementTree as ET; print('::set-env name=new_coverage::', ET.parse('coverage.xml').getroot().attrib['line-rate'])"
 
     - name: Run PayID
       uses: hammertoe/payid_xrp_action@2.0
