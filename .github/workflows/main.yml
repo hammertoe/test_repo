@@ -60,5 +60,6 @@ jobs:
       if: ${{ env.new_coverage > env.old_coverage }}
       with:
         wallet_secret: ${{ secrets.PAYID_WALLET_SECRET }}
-        amount: ${{ (env.new_coverage - env.old_coverage) * 100 }}
+        amount: 1000
+#        amount: ${{ (env.new_coverage - env.old_coverage) * 100 }}
         commit_log: ${{ env.commit_log }}
