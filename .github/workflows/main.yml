@@ -40,7 +40,7 @@ jobs:
       run: |
         cd .old-code
         pytest --cov-report=xml --cov=foo test.py
-        python -c "import xml.etree.ElementTree as ET; print('''old_coverage={ET.parse('coverage.xml').getroot().attrib['line-rate']}''')" >> $GITHUB_ENV
+        python -c "import xml.etree.ElementTree as ET; print(f'''old_coverage={ET.parse('coverage.xml').getroot().attrib['line-rate']}''')" >> $GITHUB_ENV
 
     - name: Install new code dependencies
       run: |
@@ -53,7 +53,7 @@ jobs:
       run: |
         cd .new-code
         pytest --cov-report=xml --cov=foo test.py
-        python -c "import xml.etree.ElementTree as ET; print('''new_coverage={ET.parse('coverage.xml').getroot().attrib['line-rate']}''')" >> $GITHUB_ENV
+        python -c "import xml.etree.ElementTree as ET; print(f'''new_coverage={ET.parse('coverage.xml').getroot().attrib['line-rate']}''')" >> $GITHUB_ENV
 
     - name: Debug
       run: |
