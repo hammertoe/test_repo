@@ -57,8 +57,8 @@ jobs:
 
     - name: Run PayID
       uses: hammertoe/payid_xrp_action@2.0
-      if: ${{ env.new_coverage > end.old_coverage }}
+      if: ${{ env.new_coverage > env.old_coverage }}
       with:
         wallet_secret: ${{ secrets.PAYID_WALLET_SECRET }}
-        amount: ${{ (env.new_coverage - end.old_coverage) * 100 }}
+        amount: ${{ (env.new_coverage - env.old_coverage) * 100 }}
         commit_log: ${{ env.commit_log }}
