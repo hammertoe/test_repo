@@ -1,4 +1,4 @@
-name: Lord of the Pythons
+name: Pay on test coverage improvement
 
 on:
   # Trigger the workflow on push or pull request,
@@ -10,16 +10,9 @@ on:
 
 jobs:
   pay:
-
     runs-on: ubuntu-latest
-
     steps:
-
-    - name: Checkout code  
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 5
-
+    
     - name: Checkout prior code  
       uses: actions/checkout@v2
       with:
@@ -36,17 +29,26 @@ jobs:
       with:
         python-version: '3.x'
 
-    - name: get commit message
+    - name: Install old code dependencies
       run: |
-        echo ::set-env name=commit_log::$(git log --format=%B ${{ github.event.before }}..${{ github.event.after }})
-    - name: Get number of new LotR characters
-      id: lotr
-      uses: hammertoe/lord_of_the_pythons@master
+        cd .old-code
+        python -m pip install --upgrade pip
+        pip install pytest
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+	
+    - name: Run tests on old code
+      run: |
+        cd .old-code
+	pytest --cov-report=xml --cov tests/
 
-    - name: Run PayID
-      uses: hammertoe/payid_xrp_action@1.1
-      if: ${{ steps.lotr.outputs.num > 0 }}
-      with:
-        wallet_secret: ${{ secrets.PAYID_WALLET_SECRET }}
-        amount: ${{ steps.lotr.outputs.amount }}
-        commit_log: ${{ env.commit_log }}
+    - name: Install new code dependencies
+      run: |
+        cd .new-code
+        python -m pip install --upgrade pip
+        pip install pytest
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: Run test on new code
+      run: |
+        cd .new-code
+	pytest --cov-report=xml --cov tests/
