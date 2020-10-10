@@ -17,7 +17,7 @@ class TestSum(unittest.TestCase):
         result = afunction(2)
         self.assertEqual(result, 2)
 
-    def Xtest_function6(self):
+    def test_function6(self):
         """
         Test that it can sum a list of integers
         """
